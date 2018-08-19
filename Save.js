@@ -14,8 +14,8 @@ class Save
         let count = this.stream.getUint8(0x2865);
 
         let start = 0x286D; // 0x2865 + count(0x1) + species(0x6+0x1)
-        let name_start = start + 6*48;
-        let trainer_start = name_start + 6*11;
+        let trainer_start = start + 6*48;
+        let name_start = trainer_start + 6*11;
         for(let i = 0; i < count; i++)
         {
             team.push(

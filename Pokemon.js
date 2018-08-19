@@ -1,10 +1,21 @@
+let Helper = require("./Helper");
+
 class Pokemon 
 {
     constructor(stream, nickname, trainername)
     {
         this.stream = new DataView(stream);
-        this.nickname = nickname;
-        this.trainername = trainername;
+        this.nickname = new DataView(nickname);
+        /*for(let i = 0; i< this.nickname.buffer.byteLength; i++)
+        {
+            console.debug(this.nickname.getUint8(i).toString(16));
+        }
+        console.debug("===");*/
+        this.trainername = new DataView(trainername);
+        /*for(let i = 0; i< this.trainername.buffer.byteLength; i++)
+        {
+            console.debug(this.trainername.getUint8(i).toString(16));
+        }*/
 
         this.specie = 0x00;
         this.item = 0x01;
@@ -38,8 +49,18 @@ class Pokemon
         this.spe_atk = 0x2C; //2
         this.spe_def = 0x2E; //2
 
+        let a = this.getNickname();
+        let b = this.getTrainerName();
+    }
 
-        let a = this.getValue(this.specie);
+    getNickname()
+    {
+        return Helper.ConvertTextString(this.nickname);
+    }
+
+    getTrainerName()
+    {
+        return Helper.ConvertTextString(this.trainername);
     }
 
     getValue(index)
