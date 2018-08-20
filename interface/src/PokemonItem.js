@@ -2,93 +2,88 @@ import React, { Component } from 'react';
 
 import Pokemon from './engine/Pokemon';
 
+
+
 class PokemonItem extends Component 
 {
     constructor(props)
     {
         super(props);
-        this.state = {
-            "pokedex" : {}
-        }
 
-        this.load()
+        this.dragStart = this.dragStart.bind(this);
+
     }
 
-    load()
+
+    dragStart(e)
     {
-        fetch("https://pokeapi.co/api/v2/pokemon/"+this.props.pkmn.getValue(Pokemon.specie), { "mode" : "cors"} )
-        .then((response) => {
-            return response.json();
-        })
-        .then((json) => {
-            this.setState({
-                "pokedex" : json
-            })
-        });
+        e.dataTransfer.setData('application/json', JSON.stringify({"index" : this.props.index}));
     }
 
     render()
     {
         return (
-            <div>
-                <div className="row">
-                    <div className="col">
-                        <div>
-                            <img src={ this.state.pokedex.sprites != null ? this.state.pokedex.sprites.front_default : "" } />
-                        </div>
-                        <div>
-                            <label>N°. </label>
-                            { this.props.pkmn.getValue(Pokemon.specie) }
-                        </div>
-                        <div>
-                            <label>Level </label>
-                            { this.props.pkmn.getValue(Pokemon.level) }
-                        </div>
-                        <div>
-                            { this.props.pkmn.getNickname() }<br />
-                            /{ this.state.pokedex.name}
-                        </div>
-                    </div>
+            <span>
+            {
+                this.props.pkmn.pokedex != null &&
+                <img src={ this.props.pkmn.pokedex.sprites != null ? this.props.pkmn.pokedex.sprites.front_default : "" } onDragStart={ this.dragStart } draggable={ true }/>
+            }
+            </span>
+        );
+        return (
+            <div class="card" style={{"width": "18rem"}} >
+                <div class="card-header">
+                    <span>
+                        <label>N°. </label>{ this.props.pkmn.getValue(Pokemon.specie) }
+                    </span>
+                    <span type="button" class="btn btn-primary float-right">
+                        Level <span class="badge badge-light">{ this.props.pkmn.getValue(Pokemon.level) }</span>
+                    </span>
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <div>
-                            { 
-                                ( this.props.pkmn.getValue(Pokemon.hp_current) <<8 | this.props.pkmn.getValue(Pokemon.hp_current+0x1) )
-                            }
-                            /
-                            {
-                                ( this.props.pkmn.getValue(Pokemon.hp_max) << 8 | this.props.pkmn.getValue(Pokemon.hp_max+0x1) )
-                            }
-                        </div>
-                        <div>
-                            <label>Status </label>
-                            { 
+                <img class="card-img-top" src={ this.state.pokedex.sprites != null ? this.state.pokedex.sprites.front_default : "" }/>
+                <div class="card-body">
+                    <h5 class="card-title">
+                    { this.props.pkmn.getNickname() }<br />
+                            /<span className="text-uppercase">{ this.state.pokedex.name}</span>
+                    </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        { 
+                            ( this.props.pkmn.getValue(Pokemon.hp_current) <<8 | this.props.pkmn.getValue(Pokemon.hp_current+0x1) )
+                        }
+                        /
+                        {
+                            ( this.props.pkmn.getValue(Pokemon.hp_max) << 8 | this.props.pkmn.getValue(Pokemon.hp_max+0x1) )
+                        }
+                    </li>
+                    <li class="list-group-item">
+                        <label>Status </label>
+                        { 
                                 this.props.pkmn.getValue(Pokemon.status) == 0 ? "OK" : ""
-                            }
-                        </div>
-                        <div>
-                            <label>Type</label>
-                            <ul>
-                            { 
-                                this.state.pokedex.types == null ? "" : this.state.pokedex.types.map((e) => {
-                                    return (
-                                        <li>{ e.type.name }</li>
-                                    )
-                                })
-                            }
-                            </ul>
-                        </div>     
-                    </div>       
-                    <div className="col">
-                            <div>
-                                <label>Exp points</label>
-                                { this.props.pkmn.getValue(Pokemon.exp) << 16 | this.props.pkmn.getValue(Pokemon.exp+0x1) << 8 | this.props.pkmn.getValue(Pokemon.exp+0x2) }
-                            </div>
-                    </div>      
-                </div>
+                        }
+                    </li>
+                    <li class="list-group-item">
+                        <label>Type(s) </label>
+                        <ul>
+                        { 
+                            this.state.pokedex.types == null ? "" : this.state.pokedex.types.map((e) => {
+                                return (
+                                    <li>{ e.type.name }</li>
+                                )
+                            })
+                        }
+                        </ul>
+                    </li>
+                    <li className="list-group-item">
+                        <label>Exp points </label>
+                        { this.props.pkmn.getValue(Pokemon.exp) << 16 | this.props.pkmn.getValue(Pokemon.exp+0x1) << 8 | this.props.pkmn.getValue(Pokemon.exp+0x2) }
+                            
+                    </li>
+
+                </ul>
             </div>
-        )
+        );
     }
 }
 

@@ -4,16 +4,12 @@ import Save from './engine/Save';
 
 import PokemonItem from "./PokemonItem";
 
-class Form extends Component
+class PokemonList extends Component
 {
 
     constructor(props)
     {
         super(props);
-
-        this.state = {
-            "team" : [],
-        }
 
         this.handleFile = this.handleFile.bind(this);
     }
@@ -26,32 +22,33 @@ class Form extends Component
         reader.addEventListener("load", (ev) =>
         {
             let save = new Save(ev.target.result);
-            this.setState({
-                "team" : save.getTeam()
-            });
+            this.props.onLoad(save);
         });
     }
 
     render()
     {
-        let pkmns = this.state.team.map((e) => {
+        let index = -1;
+        let pkmns = this.props.team == null ? [] : this.props.team.map((e) => {
+            index++;
             return (
-                <PokemonItem pkmn = {e} />
+                <PokemonItem key={ index } pkmn = {e} index={index} />
             )
         });
         return (
             <div>
                 {
-                    this.state.team.length  <= 0 && 
+                    this.props.team == null && 
                     <form>
                         <input type="file" onChange={ this.handleFile } />
                     </form>
                 }
-                { pkmns }
-
+                <div className="">
+                    { pkmns }
+                </div>
             </div>
         );
     }
 }
 
-export default Form;
+export default PokemonList;

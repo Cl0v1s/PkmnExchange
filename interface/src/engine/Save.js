@@ -12,24 +12,31 @@ class Save
 
     getTeam()
     {
-        let team = [];
-        let count = this.stream.getUint8(0x2865);
+        return new Promise((resolve, reject) => {
 
-        let start = Save.TeamIndex; 
-        let trainer_start = start + 6*48;
-        let name_start = trainer_start + 6*11;
-        for(let i = 0; i < count; i++)
-        {
-            team.push(
-                new Pokemon(
+            let team = [];
+            let count = this.stream.getUint8(0x2865);
+
+            let start = Save.TeamIndex; 
+            let trainer_start = start + 6*48;
+            let name_start = trainer_start + 6*11;
+
+            let requests = [];
+            for(let i = 0; i < count; i++)
+            {
+                let pkmn = new Pokemon(
                     this.stream.buffer.slice(start + i*48, start + i*48 + 48),
                     this.stream.buffer.slice(name_start + i*11, name_start+i*11+11),
                     this.stream.buffer.slice(trainer_start + i*11, trainer_start+i*11+11),
-                )
-            );
-        }
+                );
+                requests.push(pkmn.load());
+                team.push(pkmn);
+            }
+            Promise.all(requests).then(() => {
+                resolve(team);
+            })
+        })
 
-        return team;
     }
 
     replacePokemon(index, pkmn)

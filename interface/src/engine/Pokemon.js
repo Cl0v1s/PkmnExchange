@@ -48,6 +48,23 @@ class Pokemon
         {
             console.debug(this.trainername.getUint8(i).toString(16));
         }*/
+        this.pokedex = {};
+    }
+
+    load()
+    {
+        return new Promise((resolve, reject) => {
+
+            fetch("https://pokeapi.co/api/v2/pokemon/"+this.getValue(Pokemon.specie), { "mode" : "cors"})
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                this.pokedex = json;
+                resolve()
+            });
+
+        })
     }
 
     getNickname()

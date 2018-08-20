@@ -1,12 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Route} from "react-router-dom";
 
-import Form from './Form';
+import './../node_modules/bootstrap/dist/css/bootstrap-grid.min.css';
+import './../node_modules/bootstrap/dist/css/bootstrap-reboot.min.css';
+import './../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+
+import Exchanger from './Exchanger';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Route path="/" component={ Form } />
+      <Route path="/" component={ Exchanger } />
     </BrowserRouter>
   );
 }
