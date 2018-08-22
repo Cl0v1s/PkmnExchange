@@ -32,7 +32,7 @@ class PokemonList extends Component
         let pkmns = this.props.team == null ? [] : this.props.team.map((e) => {
             index++;
             return (
-                <PokemonItem key={ index } pkmn = {e} index={index} />
+                <PokemonItem key={ index } pkmn = {e} index={index} onClick={ (index) => { if(this.props.onClick != null )this.props.onClick(index )} } />
             )
         });
         return (

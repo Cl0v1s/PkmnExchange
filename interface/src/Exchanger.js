@@ -94,7 +94,7 @@ class Exchanger extends Component
                     <div className="col">
                         <div className="row">
                             <div className="col">
-                                <PokemonList onLoad={ (save) => { this.onLoad("save1", "team1", save) }} team={ this.state.team1 == null ? null : this.state.team1 } />
+                                <PokemonList onLoad={ (save) => { this.onLoad("save1", "team1", save) }} onClick={ (index) => { this.onChange("team1", "pkmn1", index )} } team={ this.state.team1 == null ? null : this.state.team1 } />
                             </div>
                             <div className="col">
                                 <PokemonDrop pkmn={ this.state.pkmn1 } onChange={ (index) => { this.onChange("team1", "pkmn1", index) } } />
@@ -107,7 +107,7 @@ class Exchanger extends Component
                                 <PokemonDrop pkmn={ this.state.pkmn2 } onChange={ (index) => { this.onChange("team2", "pkmn2", index) } } />
                             </div>
                             <div className="col">
-                                <PokemonList onLoad={ (save) => { this.onLoad("save2", "team2", save) }} team={ this.state.team2 == null ? null : this.state.team2 } />
+                                <PokemonList onLoad={ (save) => { this.onLoad("save2", "team2", save) }} onClick={ (index) => { this.onChange("team2", "pkmn2", index )} } team={ this.state.team2 == null ? null : this.state.team2 } />
                             </div>
                         </div>
                     </div>

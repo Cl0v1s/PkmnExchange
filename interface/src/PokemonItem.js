@@ -26,7 +26,7 @@ class PokemonItem extends Component
             <span>
             {
                 this.props.pkmn.pokedex != null &&
-                <img src={ this.props.pkmn.pokedex.sprites != null ? this.props.pkmn.pokedex.sprites.front_default : "" } onDragStart={ this.dragStart } draggable={ true }/>
+                <img src={ this.props.pkmn.pokedex.sprites != null ? this.props.pkmn.pokedex.sprites.front_default : "" } onClick={ () => { if(this.props.onClick != null) this.props.onClick(this.props.index) } } onDragStart={ this.dragStart } draggable={ true }/>
             }
             </span>
         );
