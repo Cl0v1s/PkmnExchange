@@ -58,7 +58,7 @@ class Exchanger extends Component
         this.state.team2.push(this.state.pkmn1);
 
         this.state.pkmn1 = null;
-        this.state.pkmn2 = 2;
+        this.state.pkmn2 = null;
 
         alert("Echange effectué.");
         this.setState(this.state);
@@ -66,6 +66,12 @@ class Exchanger extends Component
 
     generate()
     {
+        if(this.state.save1 == null || this.state.save2 == null)
+        {
+            alert("Veuillez charger deux sauvegardes.");
+            return;
+        }
+
         if(this.state.pkmn1 != null || this.state.pkmn2 != null)
         {
             alert("Vous êtes en cours d'échange.");
@@ -82,8 +88,8 @@ class Exchanger extends Component
             this.state.save2.replacePokemon(i, this.state.team2[i]);
         }
 
-        this.state.save1.generate();
-        this.state.save2.generate();
+        this.state.save1.generate("save1.sav");
+        this.state.save2.generate("save2.sav");
     }
 
     render()
